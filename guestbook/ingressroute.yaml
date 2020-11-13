@@ -10,7 +10,7 @@ spec:
     priority: 10
     kind: Rule
     services:
-    - name: argocd-server
+    - name: guestbook-ui
       port: 80
   tls:
     certResolver: le
@@ -26,7 +26,7 @@ spec:
   - match: Host(`guestbook.examples.argo.poc.oro.cloud.adyax.net`)
     kind: Rule
     services:
-    - name: oro-nginx
+    - name: guestbook-ui
       port: 80
     middlewares:
     - name: redirectscheme
