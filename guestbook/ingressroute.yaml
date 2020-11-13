@@ -1,0 +1,41 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: app
+spec:
+  entryPoints:
+  - websecure
+  routes:
+  - match: Host(`guestbook.examples.argo.poc.oro.cloud.adyax.net`)
+    priority: 10
+    kind: Rule
+    services:
+    - name: argocd-server
+      port: 80
+  tls:
+    certResolver: le
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: app-http
+spec:
+  entryPoints:
+  - web
+  routes:
+  - match: Host(`guestbook.examples.argo.poc.oro.cloud.adyax.net`)
+    kind: Rule
+    services:
+    - name: oro-nginx
+      port: 80
+    middlewares:
+    - name: redirectscheme
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: redirectscheme
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true
